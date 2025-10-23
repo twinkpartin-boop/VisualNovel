@@ -16,6 +16,18 @@ define fade_long = Fade(0.5, 1.5, 1)
 define flashbulb = Fade(0.2, 0.0, 0.2, color='#fff')
 define flashbulb_long = Fade(0.2, 2.0, 0.2, color='#fff')
 
+define entropy = 100
+
+screen entropy():
+    vbox:
+        xpos 110 yalign 45
+        text "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}"
+
+# init python:
+#     def entropy_change(change=0):
+#         renpy.show(Text("{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}"))
+#         return change
+
 
 # Вместо использования оператора image можете просто
 # складывать все ваши файлы изображений в папку images.
@@ -242,6 +254,16 @@ label start:
 
     show bg matrix
     with flashbulb_long
+
+    show bugs:
+        xalign 0
+        yalign 0
+
+#     image logo text = Text("[entropy]", size=30, font="Handjet-ExtraBold.ttf", color="#e07612")
+#     show text "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
+#         xpos 150
+#         yalign 45
+    show screen entropy
 
     kirill "Что, {w=1.0}{size=38} что произошло?! Где я?!{/size}"
 
