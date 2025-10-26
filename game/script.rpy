@@ -21,7 +21,10 @@ define entropy = 100
 screen entropy():
     vbox:
         xpos 110 yalign 45
-        text "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}"
+        textbutton "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
+            action Notify("Осталось багов")
+
+
 
 # init python:
 #     def entropy_change(change=0):
@@ -99,7 +102,7 @@ label start:
     danil "Ты уже долго ищешь работу, так вот замечательная возможность"
 
     kirill "Как-то это подозрительно..."
-    kirill "Почему нужен именно меня?"
+    kirill "Почему нужен именно я?"
 
     danil "Я смог договориться, чтобы сначала рассмотрели тебя"
 
@@ -129,7 +132,7 @@ label start:
     window hide dissolve
 
     show bg reception
-    with Fade
+    with fade
 
     window show dissolve
 
@@ -143,7 +146,7 @@ label start:
     window hide dissolve
 
     show bg office
-    with Fade
+    with fade
 
     window show dissolve
 
