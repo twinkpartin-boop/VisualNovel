@@ -207,7 +207,7 @@ label start:
 
     window hide dissolve
 
-    show bg room vr
+    show bg vr room
     with pixellate
 
     window show dissolve
@@ -225,7 +225,7 @@ label start:
     kirill "{cps=25}Тогда... {w=1.5} {b}Я готов начать{/b} {/cps}"
     hide oleg
 
-    show bg room vr scene
+    show bg vr room scene
     with fade_long
 
     oleg "Итак, запуск через {cps=15}3...{w=1.0} 2...{w=1.0} 1... {/cps}"
