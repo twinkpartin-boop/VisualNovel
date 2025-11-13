@@ -18,11 +18,11 @@ define flashbulb_long = Fade(0.2, 2.0, 0.2, color='#fff')
 
 define entropy = 100
 
-screen entropy():
-    vbox:
-        xpos 110 yalign 45
-        textbutton "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
-            action Notify("Осталось багов")
+# screen entropy():
+#     vbox:
+#         xpos 110 yalign 45
+#         textbutton "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
+#             action Notify("Осталось багов")
 
 
 
@@ -258,9 +258,9 @@ label start:
     show bg matrix
     with flashbulb_long
 
-    show bugs:
-        xalign 0
-        yalign 0
+#     show bugs:
+#         xalign 0
+#         yalign 0
 
 #     image logo text = Text("[entropy]", size=30, font="Handjet-ExtraBold.ttf", color="#e07612")
 #     show text "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
