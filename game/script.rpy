@@ -74,12 +74,14 @@ label start:
     show bg university
     with fade
 
-    show danil calm
+    show danil
+    #calm
 
     kirill "Привет. Вот я и на месте"
     kirill "О чем хотел поговорить?"
 
-    show danil interested
+    show danil
+    #interested
 
     danil "Как-то мало радости в человеке, для которого нашлось отличное рабочее место"
 
@@ -89,10 +91,12 @@ label start:
 
     kirill "и...?"
 
-    show danil angry
+    show danil
+    #angry
     danil "Не перебивай!"
     pause 0.5
-    show danil interested
+    show danil
+    #interested
     danil  "И так уж вышло, что им нужен тестировщик, готовый очень скоро выйти на работу"
     danil "Опыт не требуется"
 
@@ -108,13 +112,15 @@ label start:
 
     kirill "{cps=25}Бред какой-то. {w=1.0} Кто вообще так работников набирает?{/cps}"
 
-    show danil dissapointed
+    show danil
+    #dissapointed
     danil "Вот поэтому ты и не можешь найти работу."
     danil "Тебе нужно хвататься за любую возможность, а ты ищешь только {i}идеальные{/i} варианты"
 
     kirill "{cps=25}Ладно, {w=0.3} ладно {w=0.3}, я схожу {w=0.3}, но не обещаю, что соглашусь на работу{/cps}"
 
-    show danil interested
+    show danil
+    #interested
     danil "Вот и хорошо. Возьми визитку, там есть адрес, приходи завтра после пар"
     hide danil interested
 
@@ -158,7 +164,8 @@ label start:
 
     kirill_himself "Он вообще меня слышит?"
 
-    show oleg question
+    show oleg
+    #question
     oleg "Простите, вы вроде что-то спросили?"
 
     kirill "{cps=15}А...{w=0.5} Да...{w=0.5} Я...{/cps}"
@@ -285,14 +292,46 @@ label start:
     oleg_matrix "Вы должны найти баги, которые сможет устранить наш разработчик, он не может найти баги сам, зато вы можете, проходя игру"
     oleg_matrix "Как найдете все баги, мы сможем вас вытащить"
 
-    pause 1000
+    show bg house
+    with dissolve
 
+    kirill_himself "Ну,{w=0.5} дом как дом. Ничего интересного. Пойду да {nw}"
 
+    show bg pixels
+    with pixellate
 
+    kirill "ААА?! {nw}"
+    with hpunch
+    extend "Олег! Что происходит?"
 
+    oleg_matrix "Кажется ты наткнулся на ошибку рендеринга коллизий."
 
+    oleg_matrix "Область, помеченная как \"дверной проем\", не имеет физического коллайдера. Это классический пример нарушения целостности геометрии"
 
+    kirill "Что?! {nw}"
+    with hpunch
+    extend "{w=0.5} Что мне делать?!"
+    with hpunch
 
+    oleg_matrix "Отправь мне отчет об ошибке и я смогу её исправить"
+
+    kirill "Хорошо, хорошо! {w=0.5}...{w=0.5} Как мне это сделать?"
+
+    oleg_matrix "Используй функцию репорта. Она должна быть в вверхней-левой части твоего виртуального зрения"
+
+    kirill "Все, все, {w=0.5}, я записал"
+
+    oleg_matrix "вижу"
+
+    pause 2.0
+    show bg house
+    with fade
+
+    kirill "Фух... Это было странно. Что мне дальше делать?"
+
+    oleg_matrix "Дальше - отправляйся в город к северу отсюда"
+
+    jump cycle
 #     show asker
 #
 #     asker "Я задам тебе несколько вопросов"
