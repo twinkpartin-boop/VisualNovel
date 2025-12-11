@@ -7,11 +7,31 @@ init python:
             self.reasonColor = "#ffffff"
     user = User("---")
     def getSpeaker():
-        curS = getattr(store, '_last_say_who')
+        curS = store._last_say_who
+        if (curS is None):
+            return ["", "#fffafa"]
         if (curS.startswith("oleg")):
-            return "Олег"
+            return ["Олег", "#1058e8"]
         if (curS.startswith("kirill")):
-            return "Кирилл"
+            return ["Кирилл", "#fffafa"]
+        if (curS.startswith("danil")):
+            return ["Данил", "#0dbf28"]
+        if (curS.startswith("villager")):
+            return ["Житель", "#ede611"]
+        if (curS.startswith("eldrin")):
+            return ["Элдрин", "#db0928"]
+        if (curS.startswith("kirill")):
+            return ["Король", "#f0731a"]
+        else:
+            return ["", "#fffafa"]
+    def getAvatar():
+        curS = getattr(store, '_last_say_who')
+        if (curS is None):
+            return "placeHolder.png"
+        if (curS.startswith("kirill")):
+            return "kirillAv.png"
+        else:
+            return "placeHolder.png"
     def ShowKey(user=user):
         user.typeColor = "#ffffff"
         user.whatColor = "#ffffff"
@@ -116,8 +136,6 @@ screen BugType():
 
         has vbox
 
-        $ curSpeaker = getSpeaker()
-
         textbutton "Функциональная         ":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -173,3 +191,23 @@ screen BugReason():
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
             action Hide("BugReason")
+
+screen AvatarFrame():
+    frame:
+        xpos 30 ypos 726
+        background "avatarFrame.png"
+        vbox:
+            xpos 25 ypos 97
+            $ av = getAvatar()
+            add "[av]"
+
+screen NameFrame():
+    frame:
+        xpos 310 ypos 726
+        background "nameFrame.png"
+        vbox:
+            xpos 45 ypos 30
+            $ curSpeaker = getSpeaker()
+            $ color = curSpeaker[1]
+            $ curSpeaker = curSpeaker[0]
+            text "{color=[color]}[curSpeaker]{/color}"

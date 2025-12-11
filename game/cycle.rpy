@@ -5,6 +5,7 @@ init python:
     cycleIteration = 0
 
 label cycle:
+    queue music ["town1.mp3", "town2.mp3"] loop
     show bg town
     with fade
 
@@ -30,6 +31,8 @@ label cycle:
 
     hide villager
 
+    stop music fadeout 1.0
+    queue music ["forest1.mp3", "forest2.mp3"] loop
     show bg forest
     with fade
 
@@ -64,11 +67,12 @@ label cycle:
     with fade
 
     kirill "Спасибо за помощь. А ты разве не пойдешь сражаться?"
-
+    stop music fadeout 2.0
     eldrin "К сожалению моя магия слаба. Я только буду тебе мешать"
 
     hide eldrin
 
+    play music "boss.mp3" loop
     show bg thrownhall
     with pixellate
     show king
@@ -84,6 +88,7 @@ label cycle:
     king "Ну что же студент Кирилл сразись со мной"
 
     hide king
+    stop music fadeout 1.0
 
     python:
         cycleIteration += 1

@@ -56,6 +56,9 @@ label start:
     #звуки искр
     pause 1000
 
+#     play mucic "start1.mp3"
+    queue music ["start2.mp3", "start1.mp3"] loop
+    show screen AvatarFrame
     show bg room
     with fade
 
@@ -63,6 +66,7 @@ label start:
 
     pause 0.5
     window show dissolve
+    show screen NameFrame
 
     kirill_himself "Вроде-бы все собрал. Готов идти"
     "{color=#06347d}{font=Handjet-ExtraBold.ttf}Новое сообщение от Данил{/font}{/color}"
@@ -219,6 +223,8 @@ label start:
 
     window show dissolve
 
+    stop music fadeout 2.0
+
     oleg "Итак, Кирилл, ваша задача - провести первый запуск нашего проекта"
     show oleg:
         xalign 1.0
@@ -275,6 +281,8 @@ label start:
 #         yalign 45
     show screen entropy
 
+    play music "start2.mp3" loop
+
     kirill "Что, {w=1.0}{size=38} что произошло?! Где я?!{/size}"
 
     oleg_matrix "Кирилл, {w=0.5} Кирилл {w=0.5}, вы меня слышите?"
@@ -296,6 +304,7 @@ label start:
     with dissolve
 
     kirill_himself "Ну,{w=0.5} дом как дом. Ничего интересного. Пойду да {nw}"
+    stop music
 
     show bg pixels
     with pixellate
