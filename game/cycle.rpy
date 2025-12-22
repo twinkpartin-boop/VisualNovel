@@ -1,6 +1,7 @@
 define villager = Character("Житель", color="#ede611")
 define eldrin = Character("Элдрин", color="#db0928")
 define king = Character("Король", color="#f0731a")
+
 init python:
     cycleIteration = 0
 
@@ -8,6 +9,7 @@ label cycle:
     queue music ["town1.mp3", "town2.mp3"] loop
     show bg town
     with fade
+    show screen AvatarFrame
 
     kirill "Вроде я на месте. Почему этот город выглядит таким угнетенным? Надо поговорить с местными жителями"
 
@@ -35,7 +37,10 @@ label cycle:
     queue music ["forest1.mp3", "forest2.mp3"] loop
     show bg forest
     with fade
-
+#     show BugTree:
+#         xpos 1035
+#         ypos 446
+    show screen BugTreeSkin
     kirill "Я на месте"
 
     kirill "Тут не просто страшно, тут реально голова болит от этого шепота. Это нормально?"
@@ -43,11 +48,12 @@ label cycle:
     oleg_matrix "Аудио-воздействие запланировано. Продолжай свой путь"
 
     kirill "О! кажется я вижу выход к реке"
-
+#     hide BugTree
     oleg_matrix "Молодец. Ты на правильном пути"
-
+    hide screen BugTreeSkin
     show bg river
     with pixellate
+
 
     kirill "Странно... Река неглубокая. Мне что просто пройти ее?"
 

@@ -7,8 +7,8 @@
 define kirill = Character('Кирилл', color="#fffafa")
 define kirill_himself = Character(None, what_color="#fffafa", who_color="#fffafa", what_italic=True)
 define danil = Character('Данил', color="#0dbf28")
-define oleg = Character('Олег', color="#1058e8")
-define oleg_matrix = Character('Олег', what_color="#1058e8", who_color="#1058e8", what_font="Handjet-ExtraBold.ttf", what_size=32)
+define oleg = Character('Олег', color="#80f2ff")
+define oleg_matrix = Character('Олег', what_color="#80f2ff", who_color="#80f2ff", what_font="Handjet-ExtraBold.ttf", what_size=32)
 define system = Character(None, what_color="#fa0707", what_font="Handjet-ExtraBold.ttf", what_size=50, what_xalign=0.5, what_textalign=0.5, what_layout='subtitle')
 
 define fade = Fade(1.0, 1.0, 0.5)
@@ -16,21 +16,9 @@ define fade_long = Fade(0.5, 1.5, 1)
 define flashbulb = Fade(0.2, 0.0, 0.2, color='#fff')
 define flashbulb_long = Fade(0.2, 2.0, 0.2, color='#fff')
 
-define entropy = 100
-
-# screen entropy():
-#     vbox:
-#         xpos 110 yalign 45
-#         textbutton "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
-#             action Notify("Осталось багов")
-
-
-
-# init python:
-#     def entropy_change(change=0):
-#         renpy.show(Text("{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}"))
-#         return change
-
+default entropy = 19
+default realEntropy = 19
+default bugs = {"TreeSkin": ["262", False, False]}
 
 # Вместо использования оператора image можете просто
 # складывать все ваши файлы изображений в папку images.
@@ -66,10 +54,9 @@ label start:
 
     pause 0.5
     window show dissolve
-    show screen NameFrame
 
     kirill_himself "Вроде-бы все собрал. Готов идти"
-    "{color=#06347d}{font=Handjet-ExtraBold.ttf}Новое сообщение от Данил{/font}{/color}"
+    "{color=#f7af05}{font=Handjet-ExtraBold.ttf}Новое сообщение от Данил{/font}{/color}"
     "{color=#0dbf28}{font=Handjet-ExtraBold.ttf}Привет. У меня есть хорошие новости, давай встретимся в обед{/color}{/font}"
     kirill_himself "мх... Я не в настроении"
     pause 1.0
@@ -271,14 +258,6 @@ label start:
     show bg matrix
     with flashbulb_long
 
-#     show bugs:
-#         xalign 0
-#         yalign 0
-
-#     image logo text = Text("[entropy]", size=30, font="Handjet-ExtraBold.ttf", color="#e07612")
-#     show text "{size=80}{color=#e07612}{font=Handjet-ExtraBold.ttf}[entropy]{/font}{/color}{/size}":
-#         xpos 150
-#         yalign 45
     show screen entropy
 
     play music "start2.mp3" loop
@@ -328,7 +307,7 @@ label start:
 
     oleg_matrix "Используй функцию репорта. Она должна быть в вверхней-левой части твоего виртуального зрения"
 
-    kirill "Все, все, {w=0.5}, я записал"
+    kirill "Все, все, {w=0.5} я записал"
 
     oleg_matrix "вижу"
 
