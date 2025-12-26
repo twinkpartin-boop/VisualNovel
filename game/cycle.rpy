@@ -2,44 +2,52 @@ define villager = Character("Житель", color="#ede611")
 define eldrin = Character("Элдрин", color="#db0928")
 define king = Character("Король", color="#f0731a")
 
-init python:
-    cycleIteration = 0
-
+default iter = 0
+default speed = False
+default power = False
 label cycle:
+    if iter > 0:
+        show screen Cheats
     queue music ["town1.mp3", "town2.mp3"] loop
     show bg town
     with fade
     show screen AvatarFrame
-
+    $ cps = 40 + 1000*speed
     kirill "Вроде я на месте. Почему этот город выглядит таким угнетенным? Надо поговорить с местными жителями"
-
+    $ cps = 40 + 1000*speed
     show villager
 
     kirill "Привет. Я задам пару вопросов?"
-
-    villager "День идет. Тени длиннее становятся. Его Величество на горе бдит. Мы здесь сидим. Все как должно быть."
-
+    $ cps = 40 + 1000*speed
+    villager "{cps=[cps]}День идет. Тени длиннее становятся. Его Величество на горе бдит. Мы здесь сидим. Все как должно быть.{/cps}"
+    $ cps = 40 + 1000*speed
     kirill "Темный король? Это кто?"
-
-    villager "Он — наш щит. Щит не может быть светлым или темным. Он просто есть. Лес шепчет не для нас. Река течет не для нас. Все для Замка. Все для Порядка."
-
+    $ cps = 40 + 1000*speed
+    villager "{cps=[cps]}Он — наш щит. Щит не может быть светлым или темным. Он просто есть. Лес шепчет не для нас. Река течет не для нас. Все для Замка. Все для Порядка.{cps=[cps]}"
+    $ cps = 40 + 1000*speed
     kirill "О чем ты говоришь? Этот король типо главный тут?"
-
-    villager "Король - создатель этого мира. Замок его возвышается над просторами леса теней и реки забвения."
-
+    $ cps = 40 + 1000*speed
+    villager "{cps=[cps]}Король - создатель этого мира. Замок его возвышается над просторами леса теней и реки забвения.{cps=[cps]}"
+    if speed:
+        call FastTextBug
     kirill "Лес... Река... Олег, это туда мне нужно идти?"
 
     oleg_matrix "Все верно. Направляйся к лесу теней"
 
     hide villager
 
+    show screen BugWall
+
+    kirill "Мне кажется тут что-то мешает пройти..."
+    kirill "О! Смог протиснуться."
+
+    hide screen BugWall
+
     stop music fadeout 1.0
     queue music ["forest1.mp3", "forest2.mp3"] loop
     show bg forest
     with fade
-#     show BugTree:
-#         xpos 1035
-#         ypos 446
+
     show screen BugTreeSkin
     kirill "Я на месте"
 
@@ -97,10 +105,10 @@ label cycle:
     stop music fadeout 1.0
 
     python:
-        cycleIteration += 1
-        if (cycleIteration==1):
+        iter += 1
+        if (iter==1):
             renpy.jump("inter1")
-        elif (cycleIteration==2):
+        elif (iter==2):
             renpy.jump("iter2")
         else:
             renpy.jump("iter")

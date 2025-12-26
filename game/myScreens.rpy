@@ -72,6 +72,30 @@ init python:
         elif colorkey==3:
             user.reasonColor = "#14d91d"
         renpy.notify(f"Выбрано: {key}")
+    def GetCheatsButtons():
+        global speed
+        global power
+        res = ["", "", "", ""]
+        if speed:
+            res[0] = "On.png"
+            res[1] = "OnHover.png"
+        else:
+            res[0] = "Off.png"
+            res[1] = "OffHover.png"
+        if power:
+            res[2] = "On.png"
+            res[3] = "OnHover.png"
+        else:
+            res[2] = "Off.png"
+            res[3] = "OffHover.png"
+        return res
+    def ChangeStat(choice):
+        global speed
+        global power
+        if choice == 1:
+            speed = not speed
+        else:
+            power = not power
 define narrator = Character(None, what_xalign=0.5, what_text_align=0.5)
 default frameH = 374
 screen entropy(bugKey="---"):
@@ -128,14 +152,14 @@ screen BugWhat():
 
         has vbox
 
-        textbutton "Персонаж":
+        textbutton "НПС (неиграбельный персонаж)":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 1, 1, 2, "Персонаж")
-        textbutton "Предмет":
+            action Function(ChangeKey, 1, 1, 2, "НПС")
+        textbutton "Объект":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 1, 2, 2, "Предмет")
+            action Function(ChangeKey, 1, 2, 2, "Объект")
         textbutton "Интерфейс":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -163,10 +187,10 @@ screen BugType():
 
         has vbox
 
-        textbutton "Функциональная         ":
+        textbutton "Взаимодействие   ":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 0, 1, 1, "Функциональная")
+            action Function(ChangeKey, 0, 1, 1, "Взаимодействие")
         textbutton "Совместимость":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -179,6 +203,10 @@ screen BugType():
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
             action Function(ChangeKey, 0, 4, 1, "Локализация")
+        textbutton "Поведение":
+            text_idle_color "#ffffff"
+            text_hover_color "#0b08a1"
+            action Function(ChangeKey, 0, 5, 1, "Поведение")
         textbutton "Закрыть":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -190,30 +218,34 @@ screen BugReason():
 
         has vbox
 
-        textbutton "Характеристики":
+        textbutton "Алгоритмы поведения ии":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 2, 1, 3, "Характеристики")
+            action Function(ChangeKey, 2, 1, 3, "Алгоритмы поведения ии")
         textbutton "Алгоритмы отображения":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
             action Function(ChangeKey, 2, 2, 3, "Алгоритмы отображения")
-        textbutton "Алгоритмы поведения":
+        textbutton "Алгоритмы механик":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 2, 3, 3, "Алгоритмы поведения")
+            action Function(ChangeKey, 2, 3, 3, "Алгоритмы механик")
         textbutton "Недочеты звука":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
             action Function(ChangeKey, 2, 4, 3, "Недочеты звука")
-        textbutton "Отсутсвие оптимизации":
+        textbutton "Недочеты текста":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 2, 5, 3, "Отсутсвие оптимизации")
-        textbutton "Отсутсвие перевода":
-            text_idle_color "#ffffff"
-            text_hover_color "#0b08a1"
-            action Function(ChangeKey, 2, 6, 3, "Отсутсвие перевода")
+            action Function(ChangeKey, 2, 5, 3, "Недочеты текста")
+#         textbutton "Отсутсвие оптимизации":
+#             text_idle_color "#ffffff"
+#             text_hover_color "#0b08a1"
+#             action Function(ChangeKey, 2, 5, 3, "Отсутсвие оптимизации")
+#         textbutton "Отсутсвие перевода":
+#             text_idle_color "#ffffff"
+#             text_hover_color "#0b08a1"
+#             action Function(ChangeKey, 2, 6, 3, "Отсутсвие перевода")
         textbutton "Закрыть":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -234,14 +266,17 @@ screen AvatarFrame():
             $ curSpeaker = curSpeaker[0]
             text "{color=[color]}[curSpeaker]{/color}"
 
+screen Cheats():
+    vbox:
+        xpos 1830 ypos 100
+        $ images = GetCheatsButtons()
+        imagebutton:
+            idle images[0]
+            hover images[1]
 
-# screen NameFrame():
-#     frame:
-#         xpos 310 ypos 726
-#         background "nameFrame.png"
-#         vbox:
-#             xpos 45 ypos 30
-#             $ curSpeaker = getSpeaker()
-#             $ color = curSpeaker[1]
-#             $ curSpeaker = curSpeaker[0]
-#             text "{color=[color]}[curSpeaker]{/color}"
+            action Function(ChangeStat, 1)
+        imagebutton:
+            idle images[2]
+            hover images[3]
+
+            action Function(ChangeStat, 2)

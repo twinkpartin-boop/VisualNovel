@@ -16,9 +16,13 @@ define fade_long = Fade(0.5, 1.5, 1)
 define flashbulb = Fade(0.2, 0.0, 0.2, color='#fff')
 define flashbulb_long = Fade(0.2, 2.0, 0.2, color='#fff')
 
+image ct1 = Movie(play="cutscene.webm")
+
 default entropy = 19
 default realEntropy = 19
-default bugs = {"TreeSkin": ["262", False, False]}
+default criticals = 5
+# название ошибки: [ключ, просмотрена ли, правильно ли отправлен отчет, критическая ли]
+default bugs = {"TreeSkin": ["266", False, False, False], "FastText": ["421", False, False, True], "WallBug": ["222", False, False, True]}
 
 # Вместо использования оператора image можете просто
 # складывать все ваши файлы изображений в папку images.
@@ -29,22 +33,10 @@ default bugs = {"TreeSkin": ["262", False, False]}
 # Игра начинается здесь:
 label start:
 
-    system "СБОЙ CИСТЕМЫ ВОЗРАТА"
-
-#     e "The font tag changes the font, for example to {font=DejaVuSans-Bold.ttf}DejaVuSans-Bold.ttf{/font}."
-#
-#     e "Sometimes, changing to a bold font looks better than using the {{b} tag."
-
     window hide dissolve
 
+    $ renpy.movie_cutscene("cutscene.webm")
 
-    show bg room vr scene
-    with pixellate
-
-    #звуки искр
-    pause 1000
-
-#     play mucic "start1.mp3"
     queue music ["start2.mp3", "start1.mp3"] loop
     show screen AvatarFrame
     show bg room
@@ -229,34 +221,14 @@ label start:
     with fade_long
 
     oleg "Итак, запуск через {cps=15}3...{w=1.0} 2...{w=1.0} 1... {/cps}"
-    #громкий хлопок, сирена и искры из шлема
+    hide screen AvatarFrame
     window hide dissolve
 
-#     image bg room vr scene animated:
-#         "bg room vr scene"
-#         "bg room vr scene" with flashbulb
-#         pause 1.0
-#         "bg room vr scene" with hpunch
-#         pause .2
-#         "bg room vr scene" with flashbulb
-#         pause 1.0
-#         "bg room vr scene" with vpunch
-#         pause .2
-#         repeat
-    show bg room vr scene
-    with hpunch
-    pause .2
-    show bg room vr scene
-    with flashbulb
-    show bg room vr scene
-    with vpunch
-    pause .2
-
-    window show dissolve
-    system "СБОЙ CИСТЕМЫ ВОЗРАТА"
+    $ renpy.movie_cutscene("cutscene.webm")
 
     show bg matrix
     with flashbulb_long
+    show screen AvatarFrame
 
     show screen entropy
 
