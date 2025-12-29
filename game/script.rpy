@@ -14,15 +14,20 @@ define system = Character(None, what_color="#fa0707", what_font="Handjet-ExtraBo
 define fade = Fade(1.0, 1.0, 0.5)
 define fade_long = Fade(0.5, 1.5, 1)
 define flashbulb = Fade(0.2, 0.0, 0.2, color='#fff')
-define flashbulb_long = Fade(0.2, 2.0, 0.2, color='#fff')
+define flashbulb_long = Fade(0.2, 2.0, 1.2, color='#fff')
 
 image ct1 = Movie(play="cutscene.webm")
 
-default entropy = 19
-default realEntropy = 19
-default criticals = 5
+default entropy = 10
+default realEntropy = 10
+default criticals = 3
+default key = "---"
+default ConsoleLock = True
 # название ошибки: [ключ, просмотрена ли, правильно ли отправлен отчет, критическая ли]
-default bugs = {"TreeSkin": ["266", False, False, False], "FastText": ["421", False, False, True], "WallBug": ["222", False, False, True]}
+default bugs = {"TreeSkin": ["266", False, False, False], "FastText": ["421", False, False, True],
+ "WallBug": ["222", False, False, True], "RockBug": ["323", False, False, True], "FirstBug": ["123", True, True, False],
+ "RepeatBug": ["511", False, False, False], "RiverBug": ["123", False, False, True], "eldrinSpeechBug": ["465", False, False, False],
+ "stickBug": ["123", False, False, False], "CastleWallBug": ["223", False, False, False]}
 
 # Вместо использования оператора image можете просто
 # складывать все ваши файлы изображений в папку images.
@@ -231,6 +236,7 @@ label start:
     show screen AvatarFrame
 
     show screen entropy
+    show screen Dictionary
 
     play music "start2.mp3" loop
 
@@ -250,6 +256,8 @@ label start:
 
     oleg_matrix "Вы должны найти баги, которые сможет устранить наш разработчик, он не может найти баги сам, зато вы можете, проходя игру"
     oleg_matrix "Как найдете все баги, мы сможем вас вытащить"
+
+    call questions0 from _call_questions0
 
     show bg house
     with dissolve
@@ -277,71 +285,84 @@ label start:
 
     kirill "Хорошо, хорошо! {w=0.5}...{w=0.5} Как мне это сделать?"
 
-    oleg_matrix "Используй функцию репорта. Она должна быть в вверхней-левой части твоего виртуального зрения"
+    oleg_matrix "Сейчас я объясню. Сначала полностью выслушайте, затем отправляйте."
+    oleg_matrix "Нажмите на кнопку отправки отчета в виде иконки жука в левом верхнем краю Вашего виртуальнго зрения."
+    oleg_matrix "Потом выбери тип ошибки. В данном случае - ошибка взаимодействия, далее выбери что создает ошибку (предмет ошибки), в нашем случае объект (дверь), а также укажи причину ошибки - алгоритмы механик."
+    oleg_matrix "И не волнуйтесь, система перешлет твое местоположение в игре и список объектов с которыми ты недавно провзаимодействовал."
+    oleg_matrix "Сейчас я дам вам время разобраться с панелью. Когда всё поймете, то отправляйте отчет."
+    call FirstBug from _call_FirstBug
 
-    kirill "Все, все, {w=0.5} я записал"
-
-    oleg_matrix "вижу"
+    oleg_matrix "Так или иначе сейчас я вас вытащу отсюда, тепепортировав наверх командой."
 
     pause 2.0
     show bg house
-    with fade
+    with flashbulb
 
     kirill "Фух... Это было странно. Что мне дальше делать?"
 
     oleg_matrix "Дальше - отправляйся в город к северу отсюда"
 
-    jump cycle
-#     show asker
-#
-#     asker "Я задам тебе несколько вопросов"
-#     python:
-#         count = 0
-#         ans = renpy.input("Сколько будет 3+5?")
-#         flag1 = (ans == "8")
-#
-#     if flag1:
-#         asker "Верно"
-#         python:
-#             ans = renpy.input("Сколько будет 3*5?")
-#             count += 1
-#             flag2 = (ans == "15")
-#         if flag2:
-#             asker "Ты на что-то способен. Но как насчет следующего?"
-#             python:
-#                 ans = renpy.input("Сколько будет cos³(π/3) * 5!")
-#                 count += 1
-#                 flag3 = (ans == "15")
-#             if flag3:
-#                 asker "Я надеюсь ты не просто так ввел тот же ответ"
-#                 python:
-#                     count += 1
-#         else:
-#             asker "Я в тебе разочарован"
-#         asker "Ты дал [count] правильных ответа. Доволен собой?"
-#     else:
-#         asker "С ГЛАЗ МОИХ ПРОЧЬ!"
-#
-#     menu:
-#         "Да, вполне":
-#              "Не будь слишком самонадеян"
-#              jump go
-#         "Нет... Я стремлюсь к большему":
-#              "Верно, никогда не останавливайся на достигнутом"
-# #
-# #     choice1_yes:
-# #          asker "Не будь слишком самонадеян"
-# #          jump choice1_done
-# #
-# #     choice1_no:
-# #          asker "Верно, никогда не останавливайся на достигнутом"
-# #          jump choice1_done
-# #
-# #     choice1_done:
-# #          asker "Я ВИЖУ ТЕБЯ"
-#
-# label after_menu:
-#     return
-# label go:
-#     asker "ТЫ КУДА?!"
-#     return
+    kirill "Можно перед этим задать несколько вопросов?"
+
+    jump questions
+
+label questions:
+    oleg_matrix "Конечно. Какие детали хотите узнать?"
+    default qs = [False, False, False, False]
+
+    menu:
+        "Зачем вам не опытный тестировщик?" if qs[0] == False:
+            kirill "Зачем вам не опытный тестировщик?"
+            oleg_matrix "В нашей ситуации не нужен большой опыт для тестирования продукта. Дешевле обучить неопытного работника, нежели нанять опытного."
+            $ qs[0] = True
+            jump questions
+        "Почему сюжет именно такой?" if not qs[1]:
+            kirill "Почему сюжет именно такой?"
+            oleg_matrix "В нашей игре упор сделан на технологию полного погружения, а сюжет был спроектирован так, чтобы он был прост и понятен каждому."
+            $ qs[1] = True
+            jump questions
+        "Что будет если я не найду все баги?" if not qs[2]:
+            $ qs[2] = True
+            kirill "Что будет если я не найду все баги?"
+            oleg_matrix "Я не могу точно сказать что может произойти, но возможно что при попытке возврата из матрицы, может произойти критический сбой, который уничтожит модуль возврата."
+            oleg_matrix "Перед выведением Вас из матрицы мы остановим её, погрузив вас в некоторый сон. Чтобы все точно сработало не должно остаться критических ошибок."
+            jump questions
+        "Как понять какие ключи выбрать для отчета?" if not qs[3]:
+            $ qs[3] = True
+            kirill "Как понять какие ключи выбрать для отчета?"
+            oleg_matrix "Для этого в вашем виртуальном зрении есть специальный справочник в правом верхнем углу."
+            jump questions
+        "Я готов отправляться в город!":
+            jump cycle
+
+label questions0:
+    kirill "Я все равно ничего не понимаю..."
+    default qs0 = [False, False, False, False]
+    menu:
+        "Как закончить игру?" if qs0[0] == False:
+            $qs0[0] = True
+            kirill "Как закончить игру?"
+            oleg_matrix "Чтобы закончить игру, нужно пройти по сюжету вплодь до главного босса игры и одолеть его, тогда игра считается пройденной."
+            jump questions0
+        "Что это был за сбой?" if qs0[1] == False:
+            $qs0[1] = True
+            kirill "Что это был за сбой?"
+            oleg_matrix "Сбой был вызван большим количеством ошибок в игре. Иными словами баги игры - причина сбоя."
+            oleg_matrix " Чтобы исправить это мы должны исправить все критические ошибки, те, которые блокируют прохождение игры."
+            jump questions0
+        "Я должен идти только по сюжету?" if qs0[2] == False:
+            $qs0[2] = True
+            kirill "Я должен идти только по сюжету?"
+            oleg_matrix "Данная версия игры не предусматривает открытый мир. Свернуть с пути не получится, мир ограничен невидимыми преградами."
+            oleg_matrix "По крайней мере так задумано."
+            jump questions0
+        "Что означают эти числа рядом с иконкой жука?" if qs0[3] == False:
+            $qs0[3] = True
+            kirill "Что означают эти числа рядом с иконкой жука?"
+            oleg_matrix "Это количество ошибок, которые остались не найденными."
+            oleg_matrix "Каждый раз, когда вы будете отправлять отчет о новой ошибке, это число уменьшается."
+            oleg_matrix "Однако это не обязательно значит, что отчет был верный."
+            jump questions0
+        "Я иду в дом.":
+            return
+

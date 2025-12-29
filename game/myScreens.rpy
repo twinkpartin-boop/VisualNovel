@@ -1,16 +1,27 @@
 init python:
     class User:
-        def __init__(self, key):
-            self.key = key
+        def __init__(self):
             self.typeColor = "#ffffff"
             self.whatColor = "#ffffff"
             self.reasonColor = "#ffffff"
             self.curSpeakerYFrame = 250
             self.entropy = 19
             self.realEntropy = 19
+            self.EldrinSpeach = 32
             # Ключ бага: (код, был ли проверен, правильно ли проверен)
 #             self.bugs = {"TreeSkin": ["262", False, False]}
-    user = User("---")
+    class Eldrin:
+        def __init__(self):
+            self._size = 32
+        @property
+        def size(self):
+            global speed
+            return self._size + 50 * speed
+        @size.setter
+        def size(self, value):
+            self._size = value
+
+    user = User()
     def getSpeaker():
         curS = store._last_say_who
         if (curS is None):
@@ -57,37 +68,39 @@ init python:
         else:
             return "placeHolder.png"
     def ShowKey(bugKey):
+        global key
         user.typeColor = "#ffffff"
         user.whatColor = "#ffffff"
         user.reasonColor = "#ffffff"
-        renpy.notify(f"отправленный ключ ошибки -> {user.key}")
+        renpy.notify(f"отправленный ключ ошибки -> {key}")
         return CheckKey(bugKey)
 
-    def ChangeKey(index, num, colorkey, key):
-        user.key = user.key[:index] + str(num) + user.key[index+1:]
+    def ChangeKey(index, num, colorkey, keyChoice):
+        global key
+        key = key[:index] + str(num) + key[index+1:]
         if colorkey==1:
             user.typeColor = "#14d91d"
         elif colorkey==2:
             user.whatColor = "#14d91d"
         elif colorkey==3:
             user.reasonColor = "#14d91d"
-        renpy.notify(f"Выбрано: {key}")
+        renpy.notify(f"Выбрано: {keyChoice}")
     def GetCheatsButtons():
         global speed
         global power
         res = ["", "", "", ""]
         if speed:
-            res[0] = "On.png"
-            res[1] = "OnHover.png"
+            res[0] = "SpeedOn.png"
+            res[1] = "SpeedOnHover.png"
         else:
-            res[0] = "Off.png"
-            res[1] = "OffHover.png"
+            res[0] = "SpeedOff.png"
+            res[1] = "SpeedOffHover.png"
         if power:
-            res[2] = "On.png"
-            res[3] = "OnHover.png"
+            res[2] = "StrongOn.png"
+            res[3] = "StrongOnHover.png"
         else:
-            res[2] = "Off.png"
-            res[3] = "OffHover.png"
+            res[2] = "StrongOff.png"
+            res[3] = "StrongOffHover.png"
         return res
     def ChangeStat(choice):
         global speed
@@ -199,10 +212,10 @@ screen BugType():
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
             action Function(ChangeKey, 0, 3, 1, "Баланс")
-        textbutton "Локализация":
+        textbutton "Текстовка и аудио":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
-            action Function(ChangeKey, 0, 4, 1, "Локализация")
+            action Function(ChangeKey, 0, 4, 1, "Текстовка и аудио")
         textbutton "Поведение":
             text_idle_color "#ffffff"
             text_hover_color "#0b08a1"
@@ -280,3 +293,60 @@ screen Cheats():
             hover images[3]
 
             action Function(ChangeStat, 2)
+
+screen Console(CodeBugLabel=""):
+    vbox:
+        xpos 1830 ypos 300
+        imagebutton:
+            idle "Console.png"
+            hover "ConsoleHover.png"
+            if ConsoleLock:
+                action Notify("Думаю сейчас не время использовать это.")
+            elif CodeBugLabel == "":
+                action NullAction()
+            else:
+                action Call(CodeBugLabel)
+default isBookHere = True
+screen Dictionary():
+    vbox:
+        $ isBookHere = not isBookHere
+        xpos 1830 ypos 0
+        imagebutton:
+            idle "Dict.png"
+            hover "DictHover.png"
+            if isBookHere:
+                action Hide("Book")
+            action Show("Book")
+
+screen Book():
+    default s=26
+    frame:
+        xpos 1400 ypos 0
+        viewport:
+            area (0, 0, 400, 600)
+            scrollbars "vertical"
+            mousewheel True
+            draggable True
+
+            vbox:
+                spacing 10
+                text "{size=[s]}Руководство тестировщика. \n{size=[s]}"
+                text "{size=[s]}Типы ошибок: \n{size=[s]}"
+                text "{size=[s]}   Взаимодействие - возникает при запланированном взаимодествии с чем-либо \n{size=[s]}"
+                text "{size=[s]}   Совместимость - нахождение какого-либо оъекта не там, где он должен быть. \n{size=[s]}"
+                text "{size=[s]}   Баланс - невозможное прохождение игры по запланированному из-за слишком тяжелого испытания или сильного нпс. \n{size=[s]}"
+                text "{size=[s]}   Текстовка и аудио - ошибка в воспроизведении аудио и текстового материала. Не тот материал или ошибочно показан. \n{size=[s]}"
+                text "{size=[s]}   Поведение - ошибка в том, что делает запланированный объект (как правило в отношении НПС)\n{size=[s]}"
+                text "{size=[s]}Предметы ошибок: \n{size=[s]}"
+                text "{size=[s]}   Объект - неподвижный, как правило неживой по логике\n{size=[s]}"
+                text "{size=[s]}   НПС - Неиграбельный персонаж\n{size=[s]}"
+                text "{size=[s]}   Интерфейс - Все то, что находится в вашем виртуальном зрении\n{size=[s]}"
+                text "{size=[s]}   Звуки и музыка - ошибки в воспроизведении звуков и музыки\n{size=[s]}"
+                text "{size=[s]}   Диалоги и сценарий - Ошибки, вызванные чередой непрописанных выборов \n{size=[s]}"
+                text "{size=[s]}   Графическое оформление - Ошибки в воспроизведении текстур объектов\n{size=[s]}"
+                text "{size=[s]}Причины ошибок: \n{size=[s]}"
+                text "{size=[s]}   Алгоритмы поведения ИИ - НПС ведут себя не так, как должны\n{size=[s]}"
+                text "{size=[s]}   Алгоритмы отображения - Вещи отображаются не так, как должны (как правило текстуры)\n{size=[s]}"
+                text "{size=[s]}   Алгоритмы механик - Неправильная работа игры в целом\n{size=[s]}"
+                text "{size=[s]}   Недочеты звука - Ошибка в воспроизведении звука и музыки\n{size=[s]}"
+                text "{size=[s]}   Недочеты текста - Ошибка в воспроизведении текста\n{size=[s]}"
